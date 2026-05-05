@@ -1,0 +1,39 @@
+#include <Servo.h>
+
+// ===================== OBJEK =====================
+Servo myServo;
+
+// ===================== KONFIGURASI PIN =====================
+const int PIN_POTENSIO = A0;   // Input analog (potensiometer)
+const int PIN_SERVO    = 9;    // Output PWM (servo)
+
+// ===================== VARIABEL =====================
+int nilaiADC   = 0;   // Nilai pembacaan ADC (0 - 1023)
+int sudutServo = 0;   // Sudut servo (0 - 180)
+
+// ===================== SETUP =====================
+void setup() {
+  myServo.attach(PIN_SERVO);   // Hubungkan servo ke pin
+  Serial.begin(9600);          // Inisialisasi Serial Monitor
+}
+
+// ===================== LOOP =====================
+void loop() {
+  // --- Baca nilai dari potensiometer ---
+  nilaiADC = analogRead(PIN_POTENSIO);
+
+  // --- Konversi nilai ADC ke sudut servo ---
+  sudutServo = map(nilaiADC, 0, 1023, 0, 180);
+
+  // --- Gerakkan servo ---
+  myServo.write(sudutServo);
+
+  // --- Tampilkan ke Serial Monitor ---
+  Serial.print("ADC: ");
+  Serial.print(nilaiADC);
+  Serial.print(" | Sudut Servo: ");
+  Serial.println(sudutServo);
+
+  // --- Delay untuk stabilisasi ---
+  delay(15);
+}
